@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>quadtree — terrain · contours · pathfinding</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2318181b'/%3E%3Cpath d='M16 4v24M4 16h24M16 16l8 8' stroke='%23e4e4e7' stroke-width='2'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div id="app">
+  <aside id="sidebar">
+    <div class="brand">
+      <div class="brand-mark">◱</div>
+      <div>
+        <h1>quadtree</h1>
+        <p class="tagline">terrain · contours · pathfinding</p>
+      </div>
+    </div>
+
+    <nav id="tabs">
+      <button class="tab active" data-view="contours">Contour Map</button>
+      <button class="tab" data-view="terrain">3D Terrain</button>
+      <button class="tab" data-view="pathfinding">Pathfinding</button>
+    </nav>
+
+    <section class="panel">
+      <h2>Generation</h2>
+      <label class="row">
+        <span>Seed</span>
+        <input id="seed" type="number" value="7" step="1" />
+      </label>
+      <label class="row">
+        <span>Scale</span>
+        <input id="scale" type="range" min="1" max="6" step="0.25" value="2.75" />
+        <output id="scaleOut">2.75</output>
+      </label>
+      <label class="row">
+        <span>Octaves</span>
+        <input id="octaves" type="range" min="1" max="7" step="1" value="5" />
+        <output id="octavesOut">5</output>
+      </label>
+      <label class="row chk">
+        <input id="island" type="checkbox" checked />
+        <span>Island falloff</span>
+      </label>
+      <button id="regen" class="btn primary">⟳ Regenerate terrain</button>
+    </section>
+
+    <section class="panel" id="contourControls">
+      <h2>Contours</h2>
+      <label class="row">
+        <span>Interval</span>
+        <input id="interval" type="range" min="0.02" max="0.15" step="0.01" value="0.06" />
+        <output id="intervalOut">0.06</output>
+      </label>
+      <label class="row chk">
+        <input id="fillBands" type="checkbox" checked />
+        <span>Hypsometric fill</span>
+      </label>
+    </section>
+
+    <section class="panel" id="pathControls">
+      <h2>Pathfinding</h2>
+      <label class="row">
+        <span>Water level</span>
+        <input id="water" type="range" min="0.1" max="0.6" step="0.01" value="0.30" />
+        <output id="waterOut">0.30</output>
+      </label>
+      <label class="row">
+        <span>Max slope</span>
+        <input id="maxSlope" type="range" min="0.02" max="0.3" step="0.01" value="0.14" />
+        <output id="maxSlopeOut">0.14</output>
+      </label>
+      <label class="row chk">
+        <input id="showTree" type="checkbox" checked />
+        <span>Show quadtree</span>
+      </label>
+      <label class="row chk">
+        <input id="showExplored" type="checkbox" checked />
+        <span>Show explored nodes</span>
+      </label>
+      <div class="btn-row">
+        <button id="findPath" class="btn primary">Find path</button>
+        <button id="clearPath" class="btn">Clear</button>
+      </div>
+      <p class="hint">Click map: set <b class="c-start">start</b> · Right-click / ⇧-click: set <b class="c-goal">goal</b></p>
+      <div id="stats" class="stats"></div>
+    </section>
+
+    <footer class="credits">
+      fork of <a href="https://github.com/theabbie/quadtree">theabbie/quadtree</a><br/>
+      marching squares · fBm noise · quadtree A*
+    </footer>
+  </aside>
+
+  <main id="views">
+    <div class="view active" id="view-contours"><canvas id="contourCanvas"></canvas></div>
+    <div class="view" id="view-terrain"><div id="terrainHost"></div></div>
+    <div class="view" id="view-pathfinding"><canvas id="pathCanvas"></canvas></div>
+  </main>
+</div>
+
+<script src="vendor/three.min.js"></script>
+<script src="vendor/OrbitControls.js"></script>
+<script src="js/noise.js"></script>
+<script src="js/heightmap.js"></script>
+<script src="js/contours.js"></script>
+<script src="js/quadtree.js"></script>
+<script src="js/astar.js"></script>
+<script src="js/terrain3d.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
